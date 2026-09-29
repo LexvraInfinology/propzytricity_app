@@ -1,0 +1,50 @@
+name: propzytricity
+description: A reusable Flutter + GetX starter structure with custom widgets, snackbar, theming and demo pages.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  get: ^4.6.6
+  get_storage: ^2.1.1
+  cupertino_icons: ^1.0.6
+  flutter_svg: ^2.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: PlusJakartaSans-ExtraLight
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-ExtraLight.ttf
+    - family: PlusJakartaSans-Light
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Light.ttf
+    - family: PlusJakartaSans-Regular
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
+    - family: PlusJakartaSans-Medium
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Medium.ttf
+    - family: PlusJakartaSans-SemiBold
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-SemiBold.ttf
+    - family: PlusJakartaSans-Bold
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Bold.ttf
+    - family: PlusJakartaSans-ExtraBold
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-ExtraBold.ttf
