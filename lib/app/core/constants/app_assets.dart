@@ -42,4 +42,26 @@ class AppIcons {
   static const String apartmentIcon = '$_icons/apartment.svg';
   static const String pgIcon = '$_icons/pg_icon.svg';
   static const String floorIcon = '$_icons/floor_icon.svg';
+  static const String verifiedIcon2 = '$_icons/verified_icon2.svg';
+  static const String addIcon = '$_icons/add_icon.svg';
+  static const String bottomBarHomeFilledIcon = '$_icons/bottom_bar_home_filled_icon.svg';
+  static const String bottomBarHomeIcon = '$_icons/bottom_bar_home_icon.svg';
+  static const String enquiriesFilledIcon = '$_icons/enquiries_filled_icon.svg';
+  static const String filterIcon = '$_icons/filter_icon.svg';
+  static const String enquriesIcon = '$_icons/enquries_icon.svg';
+  static const String searchIcon = '$_icons/search_icon.svg';
+  static const String searchFilledIcon = '$_icons/search_filled_icon.svg';
+  static const String profileIcon = '$_icons/profile_icon.svg';
+  static const String profileFilledIcon = '$_icons/profile_filled_icon.svg';
+  static const String menuIcon = '$_icons/menu_icon.svg';
+  static const String favIcon = '$_icons/fav_icon.svg';
+  static const String favFilledIcon = '$_icons/fav_filled_icon.svg';
+  static const String menuFilledIcon = '$_icons/menu_filled_icon.svg';
+  static const String locationBuildingsIcon = '$_icons/location_buildings_icon.svg';
+  static const String instantIcon = '$_icons/instant_icon.svg';
+  static const String notificationsIcon = '$_icons/notification_icon.svg';
+  static const String secureIcon = '$_icons/secure_icon.svg';
+  static const String supportIcon = '$_icons/support_icon.svg';
+  static const String timerIcon = '$_icons/timer_icon.svg';
+  static const String callIcon = '$_icons/call_icon.svg';
 }

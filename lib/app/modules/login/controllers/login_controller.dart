@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:propzytricity/app/modules/profile_setup/tenant_profile_setup/models/tenant_setup_options.dart';
 import 'package:propzytricity/app/routes/app_routes.dart';
 import 'package:propzytricity/app/widgets/custom_snackbar.dart';
 
@@ -39,6 +40,16 @@ class LoginController extends GetxController {
     final mm = (s ~/ 60).toString().padLeft(2, '0');
     final ss = (s % 60).toString().padLeft(2, '0');
     return '$mm:$ss';
+  }
+
+  // ---------------- Role actions ----------------
+
+  void selectRole(UserRole value) {
+    if(value == UserRole.owner){
+      // Get.toNamed(AppRoutes.tenantProfileDetails);
+    }else{
+      Get.toNamed(AppRoutes.tenantProfileDetails);
+    }
   }
 
   // ---------------- Phone step actions ----------------

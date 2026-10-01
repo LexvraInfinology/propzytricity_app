@@ -7,13 +7,12 @@ class CircleIconButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.onTap,
-    this.size = 44,
+    this.size = 40,
   });
 
   final IconData icon;
   final VoidCallback onTap;
   final double size;
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -27,7 +26,7 @@ class CircleIconButton extends StatelessWidget {
         child: SizedBox(
           height: size,
           width: size,
-          child: Icon(icon, color: AppColors.textPrimaryLight),
+          child: Icon(icon, color: AppColors.primaryLight,size: 20,),
         ),
       ),
     );
