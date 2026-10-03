@@ -46,7 +46,7 @@ class LoginController extends GetxController {
 
   void selectRole(UserRole value) {
     if(value == UserRole.owner){
-      // Get.toNamed(AppRoutes.tenantProfileDetails);
+      Get.toNamed(AppRoutes.ownerProfileDetails);
     }else{
       Get.toNamed(AppRoutes.tenantProfileDetails);
     }

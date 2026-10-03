@@ -73,3 +73,6 @@ class TenantPreferencesView extends GetView<TenantSetupController> {
     );
   }
 }
+
+
+

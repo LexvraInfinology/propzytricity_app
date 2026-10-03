@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:propzytricity/app/core/constants/app_assets.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/views/enquiries_tab.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/controllers/tenant_dashboard_controller.dart';
-import 'package:propzytricity/app/modules/tenant_dashboard/views/coming_soon_tab.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/views/explore_tab.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/views/home_tab.dart';
+import 'package:propzytricity/app/modules/tenant_dashboard/views/profile_tab.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/views/saved_tab.dart';
 import 'package:propzytricity/app/theme/app_colors.dart';
 import 'package:propzytricity/app/widgets/app_bottom_nav_bar.dart';
@@ -36,7 +36,7 @@ class TenantDashboardView extends GetView<TenantDashboardController> {
               ExploreTab(),
               SavedTab(),
               EnquiriesView(),
-              ComingSoonTab(title: 'Profile', icon: Icons.person_outline_rounded),
+              ProfileTab(),
             ],
           ),
           bottomNavigationBar: AppBottomNavBar(

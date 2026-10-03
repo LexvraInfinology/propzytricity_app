@@ -61,8 +61,6 @@ class HomeTab extends GetView<TenantDashboardController> {
           ),
           const SizedBox(height: 12),
           Obx(() => _propertyList(controller.recommended)),
-          const SizedBox(height: 24),
-
           // Localities
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -90,7 +88,6 @@ class HomeTab extends GetView<TenantDashboardController> {
             }),
           ),
           const SizedBox(height: 24),
-
           // Recently added
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),

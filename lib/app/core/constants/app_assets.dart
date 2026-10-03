@@ -64,4 +64,6 @@ class AppIcons {
   static const String supportIcon = '$_icons/support_icon.svg';
   static const String timerIcon = '$_icons/timer_icon.svg';
   static const String callIcon = '$_icons/call_icon.svg';
+  static const String rentIcon = '$_icons/rent_icon.svg';
+  static const String sellIcon = '$_icons/sell_icon.svg';
 }

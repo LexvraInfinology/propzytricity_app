@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:propzytricity/app/data/models/app_notification_model.dart';
 import 'package:propzytricity/app/data/models/chat_message_model.dart';
 import 'package:propzytricity/app/data/models/enquiry_model.dart';
 import 'package:propzytricity/app/data/models/locality_model.dart';
 import 'package:propzytricity/app/data/models/property_model.dart';
+import 'package:propzytricity/app/modules/profile_setup/tenant_profile_setup/models/tenant_setup_options.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/views/chat_view.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/data/tenant_dashboard_mock_data.dart';
 import 'package:propzytricity/app/modules/tenant_dashboard/models/tenant_dashboard_filters.dart';
+import 'package:propzytricity/app/modules/tenant_dashboard/widgets/confirm_dialog.dart';
 import 'package:propzytricity/app/routes/app_routes.dart';
 import 'package:propzytricity/app/widgets/custom_snackbar.dart';
 import 'package:propzytricity/app/widgets/selection_sheet.dart';
@@ -86,6 +89,7 @@ class TenantDashboardController extends GetxController {
     properties.assignAll(TenantDashboardMock.properties);
     localities.assignAll(TenantDashboardMock.localities);
     enquiries.assignAll(EnquiryModel.samples());
+    notifications.assignAll(TenantDashboardMock.notifications);
   }
 
   // ---------------- Derived lists ----------------
@@ -181,7 +185,8 @@ class TenantDashboardController extends GetxController {
   }
 
   void openNotifications() {
-    CustomSnackbar.info('Notifications will be available soon');
+    Get.toNamed(AppRoutes.notifications);
+    // CustomSnackbar.info('Notifications will be available soon');
   }
 
   void openMap() {
@@ -334,12 +339,224 @@ class TenantDashboardController extends GetxController {
   void onMoreTap() {} // TODO: block / report menu
   void onPropertyTap() {} // TODO: open property detail
 
+  // ---------------- Profile ----------------
+  // Integration point: load these from the profile API and save them back
+  // in saveProfile().
+  static const String appVersion = 'v1.0.0';
+
+  final userEmail = 'abhigill@gmail.com'.obs;
+  final userPhone = '9876543210'.obs;
+  final userAbout =
+      'Looking for a 2–3 BHK apartment in Mohali or Zirakpur with good connectivity and modern amenities.'
+          .obs;
+  final profileLocation = 'Mohali, Punjab'.obs;
+  final lookingFor = PropertyInterest.rent.obs;
+  final preferredType = PropertyCategory.apartment.obs;
+  final avatarPath = RxnString();
+
+  String get formattedPhone {
+    final phone = userPhone.value;
+    return phone.length == 10
+        ? '+91 ${phone.substring(0, 5)} ${phone.substring(5)}'
+        : '+91 $phone';
+  }
+
+  // ---------------- Edit profile form ----------------
+  static const int aboutMaxLength = 200;
+  static final RegExp _phoneRegex = RegExp(r'^[6-9]\d{9}$');
+
+  final editNameController = TextEditingController();
+  final editPhoneController = TextEditingController();
+  final editAboutController = TextEditingController();
+  final editLocation = RxnString();
+  final editLookingFor = Rxn<PropertyInterest>();
+  final editType = Rxn<PropertyCategory>();
+  final editNameError = RxnString();
+  final editPhoneError = RxnString();
+  final isSavingProfile = false.obs;
+
+  /// Fills the form with the current profile, then opens the screen.
+  void openEditProfile() {
+    editNameController.text = userName.value;
+    editPhoneController.text = userPhone.value;
+    editAboutController.text = userAbout.value;
+    editLocation.value = profileLocation.value;
+    editLookingFor.value = lookingFor.value;
+    editType.value = preferredType.value;
+    editNameError.value = null;
+    editPhoneError.value = null;
+    Get.toNamed(AppRoutes.editProfile);
+  }
+
+  void onEditNameChanged(String _) {
+    if (editNameError.value != null) editNameError.value = null;
+  }
+
+  void onEditPhoneChanged(String _) {
+    if (editPhoneError.value != null) editPhoneError.value = null;
+  }
+
+  void changePhoto() {
+    // Integration point: image_picker + upload, then set avatarPath.
+    CustomSnackbar.info('Photo upload will be available soon');
+  }
+
+  Future<void> saveProfile() async {
+    if (isSavingProfile.value) return;
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    var valid = true;
+    if (editNameController.text.trim().length < 2) {
+      editNameError.value = 'Enter your full name';
+      valid = false;
+    }
+    if (!_phoneRegex.hasMatch(editPhoneController.text.trim())) {
+      editPhoneError.value = 'Enter a valid 10-digit mobile number';
+      valid = false;
+    }
+    if (!valid) return;
+
+    isSavingProfile.value = true;
+    try {
+      // Integration point: await _profileRepository.updateProfile(...);
+      await Future<void>.delayed(const Duration(seconds: 1));
+
+      userName.value = editNameController.text.trim();
+      userPhone.value = editPhoneController.text.trim();
+      userAbout.value = editAboutController.text.trim();
+      profileLocation.value = editLocation.value ?? profileLocation.value;
+      city.value = profileLocation.value.split(',').first.trim();
+      lookingFor.value = editLookingFor.value ?? lookingFor.value;
+      preferredType.value = editType.value ?? preferredType.value;
+
+      CustomSnackbar.success('Profile updated');
+      Get.back();
+    } catch (_) {
+      CustomSnackbar.error('Could not save your profile. Please try again.');
+    } finally {
+      isSavingProfile.value = false;
+    }
+  }
+
+
+
+
+  // ---------------- Settings rows ----------------
+
+  void comingSoon(String feature) {
+    CustomSnackbar.info('$feature will be available soon');
+  }
+
+  Future<void> confirmLogout() async {
+    final confirmed = await showConfirmDialog(
+      icon: Icons.logout_rounded,
+      title: 'Are you sure you want to log out?',
+      message:
+      'You can always log in again to access your saved properties, enquiries and preferences.',
+      confirmText: 'Log Out',
+    );
+    if (!confirmed) return;
+
+    // Integration point: call the logout API and clear the saved token and
+    // user data before leaving.
+    Get.offAllNamed(AppRoutes.login);
+  }
+  // ---------------- Notifications ----------------
+  final notifications = <AppNotification>[].obs;
+  final notificationFilter = NotificationFilter.all.obs;
+
+  /// Areas the alerts are about (shown on the right of the TODAY heading).
+  static const String notificationAreas = 'Mohali & Zirakpur';
+
+  int get unreadCount => notifications.where((n) => !n.isRead).length;
+
+  List<AppNotification> get visibleNotifications {
+    final filter = notificationFilter.value;
+    return notifications.where((n) => filter.matches(n.type)).toList()
+      ..sort((a, b) => a.age.compareTo(b.age));
+  }
+
+  void selectNotificationFilter(NotificationFilter filter) =>
+      notificationFilter.value = filter;
+
+  void openNotification(AppNotification notification) {
+    final index = notifications.indexWhere((n) => n.id == notification.id);
+    if (index != -1 && !notifications[index].isRead) {
+      notifications[index] = notifications[index].copyWith(isRead: true);
+    }
+    if (notification.actionLabel != null) comingSoon('Chat');
+  }
+
+  // ---------------- Location preferences ----------------
+  // Integration point: load/save the chosen areas through the profile API.
+  static const List<String> knownAreas = [
+    'Sector 66, Mohali',
+    'Sector 67, Mohali',
+    'Sector 68, Mohali',
+    'Sector 69, Mohali',
+    'Sector 70, Mohali',
+    'Sector 71, Mohali',
+    'Aerocity, Mohali',
+    'Zirakpur',
+    'Kharar',
+  ];
+
+  final selectedAreas = <String>[
+    'Sector 67, Mohali',
+    'Sector 70, Mohali',
+    'Kharar',
+  ].obs;
+  final areaSearchController = TextEditingController();
+  final areaQuery = ''.obs;
+
+  /// Areas that can still be added (not selected, and matching the search).
+  List<String> get availableAreas {
+    final query = areaQuery.value.trim().toLowerCase();
+    final chosen = selectedAreas.toList();
+    return knownAreas
+        .where(
+          (a) =>
+      !chosen.contains(a) &&
+          (query.isEmpty || a.toLowerCase().contains(query)),
+    )
+        .toList();
+  }
+
+  void onAreaSearchChanged(String value) => areaQuery.value = value;
+
+  void addArea(String area) {
+    if (!selectedAreas.contains(area)) selectedAreas.add(area);
+  }
+
+  void removeArea(String area) => selectedAreas.remove(area);
+
+  // ---------------- Profile sub-pages ----------------
+
+  void openLocationPreferences() {
+    areaSearchController.clear();
+    areaQuery.value = '';
+    Get.toNamed(AppRoutes.locationPreferences);
+  }
+
+  void openHelpSupport() => Get.toNamed(AppRoutes.helpSupport);
+
+  void openTerms() => Get.toNamed(AppRoutes.termsConditions);
+
+  void openPrivacy() => Get.toNamed(AppRoutes.privacyPolicy);
+
+  void openAbout() => Get.toNamed(AppRoutes.about);
+
   @override
   void onClose() {
     searchController.dispose();
     searchFocus.dispose();
     inputController.dispose();
     scrollController.dispose();
+    searchFocus.dispose();
+    areaSearchController.dispose();
+    editNameController.dispose();
+    editPhoneController.dispose();
+    editAboutController.dispose();
     super.onClose();
   }
 }
